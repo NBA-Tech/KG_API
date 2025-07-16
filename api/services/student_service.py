@@ -7,7 +7,7 @@ from schema.students_schema import *
 
 class StudentService:
     def __init__(self):
-        self.mongo_client = MonogoCollections()
+        self.mongo_collections = MonogoCollections()
 
     
     async def update_new_student(self, student_data: StudentModel):
@@ -31,13 +31,71 @@ class StudentService:
             # Only run update if there's something to update
             if update_query:
                 await asyncio.to_thread(
-                    self.mongo_client.STUDENT_DB["STUDENTS_DETAILS"].update_one,
+                    self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"].update_one,
                     {"student_id": student_data.student_id},
                     update_query,
                     upsert=True
                 )
 
             return {"success": True, "message": "Student record created or updated successfully"}
+
+        except Exception as e:
+            return {"success": False, "message": str(e)}
+        
+    async def get_student_list(self, student_search_request: StudentSearchRequest):
+        try:
+            mongo_query = {}
+
+            # Filters
+            if isinstance(student_search_request.filters, dict) and student_search_request.filters:
+                for key, value in student_search_request.filters.items():
+                    if isinstance(value, list):
+                        mongo_query[key] = {"$in": value}
+                    else:
+                        mongo_query[key] = value
+
+            # Optional search query - can be extended
+            if student_search_request.search_query:
+                search_regex = {"$regex": re.escape(student_search_request.search_query), "$options": "i"}
+                mongo_query["$or"] = [{"first_name": search_regex}, {"last_name": search_regex}]
+
+            projection = {"_id": 0}
+
+            # If get_all flag is set
+            if student_search_request.get_all:
+                student_cursor = self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"].find(mongo_query, projection)
+                student_list = list(student_cursor)
+                return {
+                    "success": True,
+                    "message": "All Students fetched successfully",
+                    "students": student_list,
+                    "page": 1,
+                    "page_size": len(student_list),
+                    "total_students": len(student_list)
+                }
+
+            # Pagination
+            page = student_search_request.page or 1
+            page_size = student_search_request.page_size or 10
+            skip = (page - 1) * page_size
+
+            cursor = (
+                self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"]
+                .find(mongo_query, projection)
+                .skip(skip)
+                .limit(page_size)
+            )
+            student_list = list(cursor)
+            total_count = self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"].count_documents(mongo_query)
+
+            return {
+                "success": True,
+                "message": "Students fetched successfully",
+                "students": student_list,
+                "page": page,
+                "page_size": page_size,
+                "total_students": total_count
+            }
 
         except Exception as e:
             return {"success": False, "message": str(e)}

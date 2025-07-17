@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, Literal
+from typing import List, Optional, Literal
 
 
 class StaffInfoModel(BaseModel):
@@ -11,14 +11,15 @@ class StaffInfoModel(BaseModel):
     blood_group: Optional[str]=None
     date_of_birth: Optional[str]=None
     marital_status: Optional[str]=None
+    status: Optional[bool]=True
 
 
 class StaffExperienceInfo(BaseModel):
-    handling_classes: Optional[str]=None
-    subject: Optional[str]=None
+    handling_classes: Optional[List[str]]=None
+    subject: Optional[List[str]]=None
     date_of_joining: Optional[str]=None
     qualification: Optional[str]=None
-    language_known: Optional[str]=None
+    language_known: Optional[List[str]]=None
     work_experience: Optional[str]=None
     notes: Optional[str]=None
 
@@ -36,6 +37,7 @@ class StaffBankInfo(BaseModel):
     bank_name: Optional[str]=None
     ifsc_code: Optional[str]=None
     branch_name: Optional[str]=None
+    salary: Optional[str] = None
 
 
 class StaffKYCInfo(BaseModel):

@@ -12,6 +12,7 @@ class StaffInfoModel(BaseModel):
     date_of_birth: Optional[str]=None
     marital_status: Optional[str]=None
     status: Optional[bool]=True
+    staff_profile_photo: Optional[str]=None
 
 
 class StaffExperienceInfo(BaseModel):
@@ -54,3 +55,12 @@ class StaffModel(BaseModel):
     staff_parent_info: StaffParentInfo
     staff_bank_info: StaffBankInfo
     staff_kyc_info: StaffKYCInfo
+
+
+class StaffSearchRequest(BaseModel):
+    filters: Optional[dict] = None
+    page:Optional[int]=1
+    page_size:Optional[int]=10
+    required_fields: Optional[List[str]] = None
+    search_query:Optional[str]=None
+    get_all:Optional[bool]=False

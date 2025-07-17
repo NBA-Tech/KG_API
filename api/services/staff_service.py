@@ -8,7 +8,7 @@ from schema.staff_schema import *
 
 class StaffService:
     def __init__(self):
-        self.mongo_client = MonogoCollections()
+        self.mongo_collections = MonogoCollections()
 
     
     async def update_new_staff_details(self, staff_data: StaffModel):
@@ -32,13 +32,72 @@ class StaffService:
             # Only run update if there's something to update
             if update_query:
                 await asyncio.to_thread(
-                    self.mongo_client.STAFF_DB["STAFF_DETAILS"].update_one,
+                    self.mongo_collections.STAFF_DB["STAFF_DETAILS"].update_one,
                     {"staff_id": staff_data.staff_id},
                     update_query,
                     upsert=True
                 )
 
-            return {"success": True, "message": "Student record created or updated successfully"}
+            return {"success": True, "message": "Staff record created or updated successfully"}
+
+        except Exception as e:
+            return {"success": False, "message": str(e)}
+        
+
+    async def get_staff_list(self, staff_search_request: StaffSearchRequest):
+        try:
+            mongo_query = {}
+
+            # Filters
+            if isinstance(staff_search_request.filters, dict) and staff_search_request.filters:
+                for key, value in staff_search_request.filters.items():
+                    if isinstance(value, list):
+                        mongo_query[key] = {"$in": value}
+                    else:
+                        mongo_query[key] = value
+
+            # Optional search query - can be extended
+            if staff_search_request.search_query:
+                search_regex = {"$regex": re.escape(staff_search_request.search_query), "$options": "i"}
+                mongo_query["$or"] = [{"staff_info.first_name": search_regex}, {"staff_info.last_name": search_regex}]
+
+            projection = {"_id": 0}
+
+            # If get_all flag is set
+            if staff_search_request.get_all:
+                staff_cursor = self.mongo_collections.STAFF_DB["STAFF_DETAILS"].find(mongo_query, projection)
+                staff_list = list(staff_cursor)
+                return {
+                    "success": True,
+                    "message": "All Staff fetched successfully",
+                    "staffs": staff_list,
+                    "page": 1,
+                    "page_size": len(staff_list),
+                    "total_staffs": len(staff_list)
+                }
+
+            # Pagination
+            page = staff_search_request.page or 1
+            page_size = staff_search_request.page_size or 10
+            skip = (page - 1) * page_size
+
+            cursor = (
+                self.mongo_collections.STAFF_DB["STAFF_DETAILS"]
+                .find(mongo_query, projection)
+                .skip(skip)
+                .limit(page_size)
+            )
+            staff_list = list(cursor)
+            total_count = self.mongo_collections.STAFF_DB["STAFF_DETAILS"].count_documents(mongo_query)
+
+            return {
+                "success": True,
+                "message": "Staff fetched successfully",
+                "staffs": staff_list,
+                "page": page,
+                "page_size": page_size,
+                "total_staffs": total_count
+            }
 
         except Exception as e:
             return {"success": False, "message": str(e)}

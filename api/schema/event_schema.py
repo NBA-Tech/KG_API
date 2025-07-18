@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -32,3 +32,12 @@ class EventModel(BaseModel):
     event_time: EventTimeModel
     event_poster: EventPosterModel
     event_hightlights: Optional[str] = None
+
+
+class EventSearchRequest(BaseModel):
+    filters: Optional[dict] = None
+    page:Optional[int]=1
+    page_size:Optional[int]=10
+    required_fields: Optional[List[str]] = None
+    search_query:Optional[str]=None
+    get_all:Optional[bool]=False

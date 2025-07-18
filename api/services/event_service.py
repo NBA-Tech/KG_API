@@ -41,3 +41,61 @@ class EventService:
 
         except Exception as e:
             return {"success": False, "message": str(e)}
+        
+    async def get_event_list(self, event_search_request: EventSearchRequest):
+        try:
+            mongo_query = {}
+
+            # Filters
+            if isinstance(event_search_request.filters, dict) and event_search_request.filters:
+                for key, value in event_search_request.filters.items():
+                    if isinstance(value, list):
+                        mongo_query[key] = {"$in": value}
+                    else:
+                        mongo_query[key] = value
+
+            # Optional search query - can be extended
+            if event_search_request.search_query:
+                search_regex = {"$regex": re.escape(event_search_request.search_query), "$options": "i"}
+                mongo_query["$or"] = [{"event_title": search_regex}]
+
+            projection = {"_id": 0}
+
+            # If get_all flag is set
+            if event_search_request.get_all:
+                event_cursor = self.mongo_collections.EVENT_DB["EVENT_DETAILS"].find(mongo_query, projection)
+                event_list = list(event_cursor)
+                return {
+                    "success": True,
+                    "message": "All Event fetched successfully",
+                    "events": event_list,
+                    "page": 1,
+                    "page_size": len(event_list),
+                    "total_events": len(event_list)
+                }
+
+            # Pagination
+            page = event_search_request.page or 1
+            page_size = event_search_request.page_size or 10
+            skip = (page - 1) * page_size
+
+            cursor = (
+                self.mongo_collections.EVENT_DB["EVENT_DETAILS"]
+                .find(mongo_query, projection)
+                .skip(skip)
+                .limit(page_size)
+            )
+            event_list = list(cursor)
+            total_count = self.mongo_collections.EVENT_DB["EVENT_DETAILS"].count_documents(mongo_query)
+
+            return {
+                "success": True,
+                "message": "Events fetched successfully",
+                "events": event_list,
+                "page": page,
+                "page_size": page_size,
+                "total_events": total_count
+            }
+
+        except Exception as e:
+            return {"success": False, "message": str(e)}

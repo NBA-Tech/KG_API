@@ -7,3 +7,5 @@ class MonogoCollections:
         self.STUDENT_DB = self.mongo_client["STUDENT_DB"]
         self.STAFF_DB = self.mongo_client["STAFF_DB"]
         self.EVENT_DB = self.mongo_client["EVENT_DB"]
+        self.CONTACT_DB = self.mongo_client["CONTACT_DB"]
+        self.SETTINGS_DB = self.mongo_client["SETTINGS_DB"]

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.mongo_db import connect_to_mongo,close_mongo_connection
-from v1.endpoints import students,staff,firebase_storage,event,gallery
+from v1.endpoints import students,staff,firebase_storage,event,gallery,contact,setting
 from db.firebase_client import connect_to_firebase
 
 app = FastAPI()
@@ -35,3 +35,5 @@ app.include_router(staff.router,prefix="/api/v1/staff",tags=["Staff"])
 app.include_router(firebase_storage.router,prefix="/api/v1/store",tags=["firebase store"])
 app.include_router(event.router,prefix="/api/v1/event",tags=["Event"])
 app.include_router(gallery.router,prefix="/api/v1/gallery",tags=["Gallery"])
+app.include_router(contact.router,prefix="/api/v1/contact",tags=["Contact"])
+app.include_router(setting.router,prefix="/api/v1/setting",tags=["Setting"])

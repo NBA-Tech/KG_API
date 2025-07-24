@@ -30,4 +30,13 @@ class SettingService:
 
         except Exception as e:
             return {"success": False, "message": str(e)}
+        
+    
+    async def get_setting_details(self):
+        try:
+            setting_cursor = self.mongo_collections.SETTINGS_DB["WEB_SETTINGS"].find({}, {"_id": 0})
+            setting_list = list(setting_cursor)
+            return {"success": True, "message": "All settings fetched successfully", "setting": setting_list}
+        except Exception as e:
+            return {"success": False, "message": str(e)}
 

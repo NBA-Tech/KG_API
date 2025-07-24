@@ -18,14 +18,18 @@ class HomeCarouselSettingModel(BaseSettingModel):
     home_carousel_created_on: Optional[datetime] = None
 
 
-class TopStaffListSettingModel(BaseSettingModel):
-    type: Literal["top_staff_list"]
+class StaffListSettingModel(BaseSettingModel):
+    type: Literal["staff_info"]
     staff_ids: Optional[List[str]] = None
 
 
 class ClassInfoSettingModel(BaseSettingModel):
     type: Literal["class_info"]
     class_ids: Optional[List[str]] = None
+
+class EventInfoSettingModel(BaseSettingModel):
+    type: Literal["event_info"]
+    event_ids: Optional[List[str]] = None
 
 
 class TestimonialSettingModel(BaseSettingModel):
@@ -39,7 +43,8 @@ class TestimonialSettingModel(BaseSettingModel):
 # === Discriminated Union Type (as the parent schema) ===
 SettingModel = Union[
     HomeCarouselSettingModel,
-    TopStaffListSettingModel,
+    StaffListSettingModel,
     ClassInfoSettingModel,
-    TestimonialSettingModel
+    TestimonialSettingModel,
+    EventInfoSettingModel
 ]

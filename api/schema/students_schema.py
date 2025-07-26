@@ -30,8 +30,6 @@ class StudentModel(BaseModel):
     student_created_on: Optional[str]=None
     student_status: Optional[bool]=True
     blood_group: Optional[str]=None
-    religion: Optional[str]=None
-    caste: Optional[str]=None
     other_notes: Optional[str]=None
     mother_tongue: Optional[str]=None
 

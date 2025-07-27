@@ -6,6 +6,7 @@ class ContactModel(BaseModel):
     contact_id: Optional[str] = None
     name: Optional[str] = None
     email: Optional[str] = None
+    phone_number: Optional[str] = None
     child_name: Optional[str] = None
     child_age: Optional[str] = None
     message: Optional[str] = None

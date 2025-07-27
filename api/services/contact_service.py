@@ -33,15 +33,26 @@ class ContactService:
         except Exception as e:
             return {"success": False, "message": str(e)}
         
-    async def get_contact_request_details(self, contact_id: str):
-        contact_details=[]
+    async def get_contact_request_details(self, contact_id: Optional[str] = None):
         try:
-            if(not contact_id):
-                contact_details = self.mongo_collections.CONTACT_DB["APPOINTMENT_REQUESTS"].find({}, {"_id": 0})
+            collection = self.mongo_collections.CONTACT_DB["APPOINTMENT_REQUESTS"]
+            
+            if contact_id:
+                contact_details = await collection.find_one({"contact_id": contact_id}, {"_id": 0})
             else:
-                contact_details = self.mongo_collections.CONTACT_DB["APPOINTMENT_REQUESTS"].find_one({"contact_id": contact_id}, {"_id": 0})
-            return {"success": True, "message": "Contact record fetched successfully", "contact": contact_details}
+                cursor = collection.find({}, {"_id": 0})
+                contact_details = cursor.to_list(length=None)
+
+            return {
+                "success": True,
+                "message": "Contact record(s) fetched successfully",
+                "contact": contact_details
+            }
         except Exception as e:
-            return {"success": False, "message": str(e)}
+            return {
+                "success": False,
+                "message": f"Error fetching contact details: {str(e)}"
+            }
+
     
 

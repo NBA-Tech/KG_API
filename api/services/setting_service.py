@@ -14,7 +14,8 @@ class SettingService:
             setting_dict = setting_data.dict()
 
             if not setting_dict.get("setting_id"):
-                setting_data.setting_id = generate_random_string(10)
+                total_count = await self.mongo_collections.SETTINGS_DB["WEB_SETTINGS"].count_documents({})
+                setting_data.setting_id = generate_random_string(10,"setting",total_count)
                 setting_dict["setting_id"] = setting_data.setting_id
 
             setting_id = setting_dict.pop("setting_id")

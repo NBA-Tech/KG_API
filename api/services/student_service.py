@@ -14,7 +14,8 @@ class StudentService:
         try:
             # Generate ID and timestamp if new
             if not student_data.student_id:
-                student_data.student_id = generate_random_string(10)
+                total_count = await self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"].count_documents({})
+                student_data.student_id = generate_random_string(10,"student",total_count)
                 student_data.student_created_on = get_current_date_time()
 
             # Convert to dict and remove empty/invalid fields

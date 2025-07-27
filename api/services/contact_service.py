@@ -12,7 +12,8 @@ class ContactService:
     async def update_contact_request_details(self, contact_data: ContactModel):
         try:
             if(not contact_data.contact_id):
-                contact_data.contact_id = generate_random_string(6)
+                total_count = await self.mongo_collections.CONTACT_DB["APPOINTMENT_REQUESTS"].count_documents({})
+                contact_data.contact_id = generate_random_string(6,"contact",total_count)
                 contact_data.created_on = get_current_date_time()
             raw_data = contact_data.dict(exclude_none=True)
             update_data = {

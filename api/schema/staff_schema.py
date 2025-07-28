@@ -46,7 +46,10 @@ class StaffKYCInfo(BaseModel):
     joining_letter: Optional[str]=None
     id_number: Optional[str]=None
 
-
+class StaffAuthModel(BaseModel):
+    email: Optional[str]=None
+    password: Optional[str]=None
+    
 class StaffModel(BaseModel):
     staff_id: Optional[str]=None
     student_created_on: Optional[str]=None
@@ -55,6 +58,7 @@ class StaffModel(BaseModel):
     staff_parent_info: StaffParentInfo
     staff_bank_info: StaffBankInfo
     staff_kyc_info: StaffKYCInfo
+    staff_auth: StaffAuthModel
 
 
 class StaffSearchRequest(BaseModel):
@@ -64,3 +68,4 @@ class StaffSearchRequest(BaseModel):
     required_fields: Optional[List[str]] = None
     search_query:Optional[str]=None
     get_all:Optional[bool]=False
+

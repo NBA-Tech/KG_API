@@ -100,3 +100,13 @@ class EventService:
 
         except Exception as e:
             return {"success": False, "message": str(e)}
+        
+    async def delete_event_details(self,event_id):
+        try:
+            await asyncio.to_thread(
+                self.mongo_collections.EVENT_DB["EVENT_DETAILS"].delete_one,
+                {"event_id": event_id}
+            )
+            return {"success": True, "message": "Event record deleted successfully"}
+        except Exception as e:
+            return {"success": False, "message": str(e)}

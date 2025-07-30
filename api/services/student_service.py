@@ -101,3 +101,13 @@ class StudentService:
         except Exception as e:
             return {"success": False, "message": str(e)}
 
+
+    async def delete_student_details(self,student_id):
+        try:
+            await asyncio.to_thread(
+                self.mongo_collections.STUDENT_DB["STUDENTS_DETAILS"].delete_one,
+                {"student_id": student_id}
+            )
+            return {"success": True, "message": "Student record deleted successfully"}
+        except Exception as e:
+            return {"success": False, "message": str(e)}

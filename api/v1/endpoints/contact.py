@@ -19,3 +19,9 @@ async def get_contact_request_details(contact_id: Optional[str] = Query(default=
     contact_details = await contact_service.get_contact_request_details(contact_id)
     contact_details['status_code'] = 200 if contact_details.get('success') else 500
     return contact_details
+
+@router.delete("/delete_contact_request_details",description="Delete contact request details")
+async def delete_contact_request_details(contact_id: str):
+    delete_contact=await contact_service.delete_contact_request_details(contact_id)
+    delete_contact['status_code']=200 if delete_contact['success']==True else 500
+    return delete_contact

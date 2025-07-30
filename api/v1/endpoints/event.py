@@ -19,3 +19,9 @@ async def get_event_list(event_search_request: EventSearchRequest):
     event_list=await event_service.get_event_list(event_search_request)
     event_list['status_code']=200 if event_list['success']==True else 500
     return event_list
+
+@router.delete("/delete_event_details",description="Delete event details")
+async def delete_event_details(event_id: str):
+    delete_event=await event_service.delete_event_details(event_id)
+    delete_event['status_code']=200 if delete_event['success']==True else 500
+    return delete_event

@@ -102,3 +102,14 @@ class StaffService:
 
         except Exception as e:
             return {"success": False, "message": str(e)}
+        
+    
+    async def delete_staff_details(self,staff_id):
+        try:
+            await asyncio.to_thread(
+                self.mongo_collections.STAFF_DB["STAFF_DETAILS"].delete_one,
+                {"staff_id": staff_id}
+            )
+            return {"success": True, "message": "Staff record deleted successfully"}
+        except Exception as e:
+            return {"success": False, "message": str(e)}

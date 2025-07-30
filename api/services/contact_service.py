@@ -54,6 +54,14 @@ class ContactService:
                 "success": False,
                 "message": f"Error fetching contact details: {str(e)}"
             }
+        
 
-    
-
+    async def delete_contact_request_details(self, contact_id: str):
+        try:
+            await asyncio.to_thread(
+                self.mongo_collections.CONTACT_DB["APPOINTMENT_REQUESTS"].delete_one,
+                {"contact_id": contact_id}
+            )
+            return {"success": True, "message": "Contact record deleted successfully"}
+        except Exception as e:
+            return {"success": False, "message": str(e)}

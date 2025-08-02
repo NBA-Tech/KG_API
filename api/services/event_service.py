@@ -14,7 +14,7 @@ class EventService:
         try:
             # Generate ID and timestamp if new
             if not event_data.event_id:
-                total_count = await self.mongo_collections.EVENT_DB["EVENT_DETAILS"].count_documents({})
+                total_count = self.mongo_collections.EVENT_DB["EVENT_DETAILS"].count_documents({})
                 event_data.event_id = generate_random_string(10,"event",total_count)
                 event_data.event_created_on = get_current_date_time()
 

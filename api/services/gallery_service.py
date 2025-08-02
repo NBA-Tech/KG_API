@@ -13,7 +13,7 @@ class GalleryService:
         try:
             # Generate ID and timestamp if new
             if not gallery_data.gallery_id:
-                total_count = await self.mongo_collections.EVENT_DB["GALLERY_DETAILS"].count_documents({})
+                total_count = self.mongo_collections.EVENT_DB["GALLERY_DETAILS"].count_documents({})
                 gallery_data.gallery_id = generate_random_string(10,"gallery",total_count)
                 gallery_data.gallery_created_on = get_current_date_time()
 

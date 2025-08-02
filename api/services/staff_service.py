@@ -15,7 +15,7 @@ class StaffService:
         try:
             # Generate ID and timestamp if new
             if not staff_data.staff_id:
-                total_count = await self.mongo_collections.STAFF_DB["STAFF_DETAILS"].count_documents({})
+                total_count = self.mongo_collections.STAFF_DB["STAFF_DETAILS"].count_documents({})
                 staff_data.staff_id = generate_random_string(10,"staff",total_count)
                 staff_data.student_created_on = get_current_date_time()
 

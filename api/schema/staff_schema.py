@@ -10,7 +10,6 @@ class StaffInfoModel(BaseModel):
     email_address: Optional[str]=None
     blood_group: Optional[str]=None
     date_of_birth: Optional[str]=None
-    marital_status: Optional[str]=None
     status: Optional[bool]=True
     staff_profile_photo: Optional[str]=None
 

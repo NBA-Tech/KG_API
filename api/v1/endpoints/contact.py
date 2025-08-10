@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
-from services.contact_service import ContactService
-from schema.contact_schema import *
+from api.services.contact_service import ContactService
+from api.schema.contact_schema import *
 
 
 

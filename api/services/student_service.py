@@ -1,8 +1,8 @@
-from db.mongo_collections import MonogoCollections
+from api.db.mongo_collections import MonogoCollections
 import asyncio
-from core.helpers import *
+from api.core.helpers import *
 import re
-from schema.students_schema import *
+from api.schema.students_schema import *
 
 
 class StudentService:

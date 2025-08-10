@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from services.event_service import EventService
-from schema.event_schema import *
+from api.services.event_service import EventService
+from api.schema.event_schema import *
 
 
 router=APIRouter()

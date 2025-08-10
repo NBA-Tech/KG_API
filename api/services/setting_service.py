@@ -1,8 +1,8 @@
-from db.mongo_collections import MonogoCollections
+from api.db.mongo_collections import MonogoCollections
 import asyncio
-from core.helpers import *
+from api.core.helpers import *
 import re
-from schema.setting_schema import *
+from api.schema.setting_schema import *
 
 
 class SettingService:

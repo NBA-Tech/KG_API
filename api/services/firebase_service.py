@@ -1,7 +1,7 @@
 # services/firebase_storage_service.py
 
 from google.cloud import storage
-from db.firebase_client import get_bucket
+from api.db.firebase_client import get_bucket
 from typing import Optional
 import mimetypes
 

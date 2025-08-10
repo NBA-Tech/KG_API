@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
-from services.auth_service import AuthService
-from schema.auth_schema import *
+from api.services.auth_service import AuthService
+from api.schema.auth_schema import *
 
 
 

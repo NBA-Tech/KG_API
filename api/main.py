@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from db.mongo_db import connect_to_mongo,close_mongo_connection
-from v1.endpoints import students,staff,firebase_storage,event,gallery,contact,setting,auth
-from db.firebase_client import connect_to_firebase
+from api.db.mongo_db import connect_to_mongo,close_mongo_connection
+from api.v1.endpoints import students,staff,firebase_storage,event,gallery,contact,setting,auth
+from api.db.firebase_client import connect_to_firebase
 
 app = FastAPI()
 

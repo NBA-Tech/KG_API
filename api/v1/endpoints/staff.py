@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from services.staff_service import StaffService
-from schema.staff_schema import *
+from api.services.staff_service import StaffService
+from api.schema.staff_schema import *
 
 router=APIRouter()
 student_service=StaffService()

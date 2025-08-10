@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends,UploadFile, File,Form
-from services.firebase_service import FirebaseStorageService
+from api.services.firebase_service import FirebaseStorageService
 
 
 router=APIRouter()

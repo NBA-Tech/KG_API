@@ -1,6 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, storage
-from core.config import config
+from api.core.config import config
 
 
 cred=None

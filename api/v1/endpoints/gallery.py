@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from services.gallery_service import GalleryService
-from schema.gallery_schema import *
+from api.services.gallery_service import GalleryService
+from api.schema.gallery_schema import *
 
 
 

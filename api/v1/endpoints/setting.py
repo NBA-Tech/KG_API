@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from services.setting_service import SettingService
-from schema.setting_schema import *
+from api.services.setting_service import SettingService
+from api.schema.setting_schema import *
 
 
 router=APIRouter()

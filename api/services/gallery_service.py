@@ -24,17 +24,12 @@ class GalleryService:
                 if not (v == "" or v == [] or v == 0 or v==None)
             }
 
-            update_query = {}
-            if update_data:
-                update_query["$set"] = update_data
 
             # Only run update if there's something to update
-            if update_query:
+            if update_data:
                 await asyncio.to_thread(
-                    self.mongo_collections.EVENT_DB["GALLERY_DETAILS"].update_one,
-                    {"gallery_id": gallery_data.gallery_id},
-                    update_query,
-                    upsert=True
+                    self.mongo_collections.EVENT_DB["GALLERY_DETAILS"].insert_one,
+                    update_data
                 )
 
             return {"success": True, "message": "Gallery record created or updated successfully"}
